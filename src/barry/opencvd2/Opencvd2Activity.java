@@ -1,72 +1,72 @@
 package barry.opencvd2;
 
-/*
-This code to go into CameraBridgeViewBase in 
-order to scale the bitmap to the size of the screen
- 
-The file is at:
- 
-[your path to the sdk]\OpenCV-2.4.4-android-sdk\sdk\java\src\org\opencv\android
+		/*
+		This code to go into CameraBridgeViewBase in
+		order to scale the bitmap to the size of the screen
 
-   protected void deliverAndDrawFrame(CvCameraViewFrame frame) {
-       Mat modified;
+		The file is at:
 
-       if (mListener != null) {
-           modified = mListener.onCameraFrame(frame);
-       } else {
-           modified = frame.rgba();
-       }
+		[your path to the sdk]\OpenCV-2.4.4-android-sdk\sdk\java\src\org\opencv\android
 
-       boolean bmpValid = true;
-       if (modified != null) {
-           try {
-               Utils.matToBitmap(modified, mCacheBitmap);
-           } catch(Exception e) {
-               Log.e(TAG, "Mat type: " + modified);
-               Log.e(TAG, "Bitmap type: " + mCacheBitmap.getWidth() + "*" + mCacheBitmap.getHeight());
-               Log.e(TAG, "Utils.matToBitmap() throws an exception: " + e.getMessage());
-               bmpValid = false;
-           }
-       }
+		   protected void deliverAndDrawFrame(CvCameraViewFrame frame) {
+			   Mat modified;
 
-       if (bmpValid && mCacheBitmap != null) {
-           Canvas canvas = getHolder().lockCanvas();
-           if (canvas != null) {
-               canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
-               
-               
-               /////////////////////////////////////////////////////
-               ////// THIS IS THE CHANGED PART /////////////////////
-               int width = mCacheBitmap.getWidth();
-               int height = mCacheBitmap.getHeight();
-               float scaleWidth = ((float) canvas.getWidth()) / width;
-               float scaleHeight = ((float) canvas.getHeight()) / height;
-               float fScale = Math.min(scaleHeight,  scaleWidth);
-               // CREATE A MATRIX FOR THE MANIPULATION
-               Matrix matrix = new Matrix();
-               // RESIZE THE BITMAP
-               matrix.postScale(fScale, fScale);
+			   if (mListener != null) {
+				   modified = mListener.onCameraFrame(frame);
+			   } else {
+				   modified = frame.rgba();
+			   }
 
-               /////////////////////////////////////////////////////
+			   boolean bmpValid = true;
+			   if (modified != null) {
+				   try {
+					   Utils.matToBitmap(modified, mCacheBitmap);
+				   } catch(Exception e) {
+					   Log.e(TAG, "Mat type: " + modified);
+					   Log.e(TAG, "Bitmap type: " + mCacheBitmap.getWidth() + "*" + mCacheBitmap.getHeight());
+					   Log.e(TAG, "Utils.matToBitmap() throws an exception: " + e.getMessage());
+					   bmpValid = false;
+				   }
+			   }
 
-               // RECREATE THE NEW BITMAP
-               Bitmap resizedBitmap = Bitmap.createBitmap(mCacheBitmap, 0, 0, width, height, matrix, false);
-               
-               canvas.drawBitmap(resizedBitmap, (canvas.getWidth() - resizedBitmap.getWidth()) / 2, (canvas.getHeight() - resizedBitmap.getHeight()) / 2, null);
-               if (mFpsMeter != null) {
-                   mFpsMeter.measure();
-                   mFpsMeter.draw(canvas, 20, 30);
-               }
-               getHolder().unlockCanvasAndPost(canvas);
-           }
-       }
-   }
+			   if (bmpValid && mCacheBitmap != null) {
+				   Canvas canvas = getHolder().lockCanvas();
+				   if (canvas != null) {
+					   canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
 
 
+					   /////////////////////////////////////////////////////
+					   ////// THIS IS THE CHANGED PART /////////////////////
+					   int width = mCacheBitmap.getWidth();
+					   int height = mCacheBitmap.getHeight();
+					   float scaleWidth = ((float) canvas.getWidth()) / width;
+					   float scaleHeight = ((float) canvas.getHeight()) / height;
+					   float fScale = Math.min(scaleHeight,  scaleWidth);
+					   // CREATE A MATRIX FOR THE MANIPULATION
+					   Matrix matrix = new Matrix();
+					   // RESIZE THE BITMAP
+					   matrix.postScale(fScale, fScale);
 
-*
-*
-*/
+					   /////////////////////////////////////////////////////
+
+					   // RECREATE THE NEW BITMAP
+					   Bitmap resizedBitmap = Bitmap.createBitmap(mCacheBitmap, 0, 0, width, height, matrix, false);
+
+					   canvas.drawBitmap(resizedBitmap, (canvas.getWidth() - resizedBitmap.getWidth()) / 2, (canvas.getHeight() - resizedBitmap.getHeight()) / 2, null);
+					   if (mFpsMeter != null) {
+						   mFpsMeter.measure();
+						   mFpsMeter.draw(canvas, 20, 30);
+					   }
+					   getHolder().unlockCanvasAndPost(canvas);
+				   }
+			   }
+		   }
+
+
+
+		*
+		*
+		*/
 
 
 import java.io.File;
@@ -158,9 +158,9 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
                         Context context = getApplicationContext();
                         InputStream is3 = context.getResources().openRawResource(R.raw.banana_classifier);
                         File cascadeDir = context.getDir("cascade", Context.MODE_PRIVATE);
-//                        File cascadeFile = new File(cascadeDir, "banana_classifier.xml");
-                        File cascadeFile = new File(cascadeDir, "chair.xml");
-//                        File cascadeFile = new File(cascadeDir, "cascade.xml");
+                        //                        File cascadeFile = new File(cascadeDir, "banana_classifier.xml");
+//                        File cascadeFile = new File(cascadeDir, "chair.xml");
+                                                File cascadeFile = new File(cascadeDir, "cascade.xml");
                         FileOutputStream os = new FileOutputStream(cascadeFile);
 
                         byte[] buffer = new byte[4096];
@@ -469,12 +469,12 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
         mRgba = new Mat(height, width, CvType.CV_8UC4);
         mIntermediateMat = new Mat(height, width, CvType.CV_8UC4);
 
-//        initialize cpu controller, set to 400 MHz;
+        //        initialize cpu controller, set to 400 MHz;
         cpuController1 = new CPUController();
         cpuController1.CPU_FreqChange(4);
         //cpuController1.CPU_FreqChange(0);
         System.out.println("here");
-//        Log.i(TAG, "Power save mode");
+        //        Log.i(TAG, "Power save mode");
 
 
     }
@@ -536,8 +536,8 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
             case VIEW_MODE_RGBA:
 
 
-//                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/img_0100.png");
-//                mRgba = newFrame;
+                //                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/img_0100.png");
+                //                mRgba = newFrame;
 
 
                 if (bDisplayTitle)
@@ -897,17 +897,17 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 
                     mMOP2fptsThis.copyTo(mMOP2fptsSafe);
                 }
-        	
-        	
-           	/*
-           	Parameters:
-           		prevImg first 8-bit input image
-           		nextImg second input image
-           		prevPts vector of 2D points for which the flow needs to be found; point coordinates must be single-precision floating-point numbers.
-           		nextPts output vector of 2D points (with single-precision floating-point coordinates) containing the calculated new positions of input features in the second image; when OPTFLOW_USE_INITIAL_FLOW flag is passed, the vector must have the same size as in the input.
-           		status output status vector (of unsigned chars); each element of the vector is set to 1 if the flow for the corresponding features has been found, otherwise, it is set to 0.
-           		err output vector of errors; each element of the vector is set to an error for the corresponding feature, type of the error measure can be set in flags parameter; if the flow wasn't found then the error is not defined (use the status parameter to find such cases).
-            */
+
+
+					/*
+					Parameters:
+						prevImg first 8-bit input image
+						nextImg second input image
+						prevPts vector of 2D points for which the flow needs to be found; point coordinates must be single-precision floating-point numbers.
+						nextPts output vector of 2D points (with single-precision floating-point coordinates) containing the calculated new positions of input features in the second image; when OPTFLOW_USE_INITIAL_FLOW flag is passed, the vector must have the same size as in the input.
+						status output status vector (of unsigned chars); each element of the vector is set to 1 if the flow for the corresponding features has been found, otherwise, it is set to 0.
+						err output vector of errors; each element of the vector is set to an error for the corresponding feature, type of the error measure can be set in flags parameter; if the flow wasn't found then the error is not defined (use the status parameter to find such cases).
+					*/
                 Video.calcOpticalFlowPyrLK(matOpFlowPrev, matOpFlowThis, mMOP2fptsPrev, mMOP2fptsThis, mMOBStatus, mMOFerr);
 
                 cornersPrev = mMOP2fptsPrev.toList();
@@ -937,60 +937,56 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
             case VIEW_MODE_OBJECT_DETECTION:
                 // Set the frequency to 1134000 KHz
 
-                
 
-                List<File> files = getListFiles(new File("/mnt/sdcard/ImageDataset/resized_color_large/"));
-//                List<File> files1 = getListFiles(new File("/mnt/sdcard/ImageDataset/depth_large/"));
+//                for (int j = 0; j < files.size(); j++) {
+//                    counter++;
+//                    Log.d("Files", "FileName:" + files.get(j).getName());
+//                    Log.d("detected", "detected:"+ counter);
+//// Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/depth_large/" + files1.get(j).getName());
+//                    Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/resized_color_large/" + files.get(j).getName());
+//
+
+                //                List<File> files = getListFiles(new File("/mnt/sdcard/ImageDataset/test/"));
+                //                List<File> files1 = getListFiles(new File("/mnt/sdcard/ImageDataset/depth_large/"));
 
                 //while(counter <100) {
-                    for (int j = 0; j < files.size(); j++) {
-                        counter++;
-                        Log.d("Files", "FileName:" + files.get(j).getName());
-                        Log.d("detected", "detected:"+ counter);
+                //                    for (int j = 0; j < files.size(); j++) {
+                lTimeStart = System.currentTimeMillis();
+                Log.d("Time", "start at:"+ lTimeStart);
 
-//                        Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/depth_large/" + files1.get(j).getName());
+//                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair/chair2.png");
+                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair/KinectScreenshot-Color-07-36-09.png");
 
-
-                        Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/resized_color_large/" + files.get(j).getName());
-//                        newFrame = newFrame.submat(1, 288, 1, 512);
-                        // Convert the image into a gray image
+//                Mat newFrame = depthFrame.submat(180,424,238,341); // for video 1 @47
+//                 newFrame = newFrame.submat(149,419,199,270); // for video 2 @48
 
 
-//                inputFrame.copyTo(mRgba);
-                        Imgproc.cvtColor(newFrame, mGray, Imgproc.COLOR_RGBA2GRAY); // Convert to grayscale
 
-                        MatOfRect faces = new MatOfRect();
+                Imgproc.cvtColor(newFrame, mGray, Imgproc.COLOR_RGBA2GRAY); // Convert to grayscale
 
-                        if (mAbsoluteFaceSize == 0) {
-                            int height = mGray.rows();
+                MatOfRect faces = new MatOfRect();
 
-                            if (Math.round(height * mRelativeFaceSize) > 0) {
-                                mAbsoluteFaceSize = Math.round(height * mRelativeFaceSize);
-                            }
-                        }
-                        if (mCascade != null)
-                            mCascade.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-                                    new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+                if (mAbsoluteFaceSize == 0) {
+                    int height = mGray.rows();
 
-                        // Each rectangle in the faces array is a face
-                        // Draw a rectangle around each face
-                        Rect[] facesArray = faces.toArray();
-                        for (int i = 0; i < facesArray.length; i++)
-                            Core.rectangle(newFrame, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
-
-                        Highgui.imwrite("/mnt/sdcard/results/" + files.get(j).getName(), newFrame);
-                        if (counter > 82){
-                            cpuController1.CPU_FreqChange(4);// Set the frequency to 1134000 KHz
-                            Log.d("detected", "detected:");
-
-                        }
-
-                        //}
-                        if (counter > 100) {
-                            Log.d("over", "over:");
-                        }
-
+                    if (Math.round(height * mRelativeFaceSize) > 0) {
+                        mAbsoluteFaceSize = Math.round(height * mRelativeFaceSize);
                     }
+                }
+                if (mCascade != null)
+                    mCascade.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
+                            new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+
+                // Each rectangle in the faces array is a face
+                // Draw a rectangle around each face
+                Rect[] facesArray = faces.toArray();
+                for (int i = 0; i < facesArray.length; i++)
+                    Core.rectangle(newFrame, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
+
+                Highgui.imwrite("/mnt/sdcard/results/test5.png", newFrame);
+
+                lTimeEnd = System.currentTimeMillis();
+                Log.d("Time", "used :"+ (lTimeEnd-lTimeStart));
 
 
 
@@ -1004,62 +1000,63 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 
 
 
-//                Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY);
 
-//                Size sizeRgba = mRgba.size();
-//                int step = 200;
-//
-//                rDest.x = 5;
-//                rDest.y = 5;
-//                rDest.width = 400;
-//                rDest.height = 400;
-//
-//                for (rDest.x = 5; rDest.x < sizeRgba.width; rDest.x = rDest.x + step ) {
-//                    for (rDest.y = 5; rDest.y < sizeRgba.height; rDest.y = rDest.y + step) {
-//                        mSlidingWindow = mRgba.submat(rDest);
-//                        Core.rectangle(mRgba, rDest.tl(), rDest.br(), colorRed, 3);
-//
-//
-//                    }
-//                }
+                //                Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY);
 
-//                Mat rgbaInnerWindow, rgbaInnerWindow1, rgbaInnerWindow2;
-//                Mat cellWindow;
-//                MatOfByte status = new MatOfByte();
-//                MatOfFloat err = new MatOfFloat();
-//                MatOfPoint2f nextPts =new MatOfPoint2f();
-//                MatOfPoint2f prevPts =new MatOfPoint2f();
-//                MatOfPoint initial = new MatOfPoint();
+                //                Size sizeRgba = mRgba.size();
+                //                int step = 200;
+                //
+                //                rDest.x = 5;
+                //                rDest.y = 5;
+                //                rDest.width = 400;
+                //                rDest.height = 400;
+                //
+                //                for (rDest.x = 5; rDest.x < sizeRgba.width; rDest.x = rDest.x + step ) {
+                //                    for (rDest.y = 5; rDest.y < sizeRgba.height; rDest.y = rDest.y + step) {
+                //                        mSlidingWindow = mRgba.submat(rDest);
+                //                        Core.rectangle(mRgba, rDest.tl(), rDest.br(), colorRed, 3);
+                //
+                //
+                //                    }
+                //                }
 
-//                int rows = (int) sizeRgba.height;
-//                int cols = (int) sizeRgba.width;
+                //                Mat rgbaInnerWindow, rgbaInnerWindow1, rgbaInnerWindow2;
+                //                Mat cellWindow;
+                //                MatOfByte status = new MatOfByte();
+                //                MatOfFloat err = new MatOfFloat();
+                //                MatOfPoint2f nextPts =new MatOfPoint2f();
+                //                MatOfPoint2f prevPts =new MatOfPoint2f();
+                //                MatOfPoint initial = new MatOfPoint();
 
-
-//                int left = 2*cols / 8;
-//                int top = 2*rows / 8;
-//
-//                int width = cols * 1 / 4;
-//                int height = rows * 1 / 4;
-
-//                Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), colorRed, 3);
-//                int cols = mRgba.cols();
-//                int rows = mRgba.rows();
-//                int xOffset = (mOpenCvCameraView.getWidth() - cols) / 2;
-//                int yOffset = (mOpenCvCameraView.getHeight() - rows) / 2;
-//                int x = (int)event.getX() - xOffset;
-//                int y = (int)event.getY() - yOffset;
+                //                int rows = (int) sizeRgba.height;
+                //                int cols = (int) sizeRgba.width;
 
 
-//                // doing a gaussian blur prevents getting a lot of false hits
-//                Imgproc.GaussianBlur(mGray, mGray, sSize5, 2, 2);
-//
-//                iCannyLowerThreshold = 35;
-//                iCannyUpperThreshold = 75;
-//
-//                Imgproc.Canny(mGray, mIntermediateMat, iCannyLowerThreshold, iCannyUpperThreshold);
-//
-//                Imgproc.cvtColor(mIntermediateMat, mRgba, Imgproc.COLOR_GRAY2BGRA, 4);
-//
+                //                int left = 2*cols / 8;
+                //                int top = 2*rows / 8;
+                //
+                //                int width = cols * 1 / 4;
+                //                int height = rows * 1 / 4;
+
+                //                Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), colorRed, 3);
+                //                int cols = mRgba.cols();
+                //                int rows = mRgba.rows();
+                //                int xOffset = (mOpenCvCameraView.getWidth() - cols) / 2;
+                //                int yOffset = (mOpenCvCameraView.getHeight() - rows) / 2;
+                //                int x = (int)event.getX() - xOffset;
+                //                int y = (int)event.getY() - yOffset;
+
+
+                //                // doing a gaussian blur prevents getting a lot of false hits
+                //                Imgproc.GaussianBlur(mGray, mGray, sSize5, 2, 2);
+                //
+                //                iCannyLowerThreshold = 35;
+                //                iCannyUpperThreshold = 75;
+                //
+                //                Imgproc.Canny(mGray, mIntermediateMat, iCannyLowerThreshold, iCannyUpperThreshold);
+                //
+                //                Imgproc.cvtColor(mIntermediateMat, mRgba, Imgproc.COLOR_GRAY2BGRA, 4);
+                //
                 if (bDisplayTitle)
                     ShowTitle ("Object Detection", 1, colorGreen);
                 break;
