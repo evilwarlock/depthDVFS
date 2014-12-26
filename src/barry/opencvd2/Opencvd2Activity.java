@@ -160,7 +160,7 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
                         File cascadeDir = context.getDir("cascade", Context.MODE_PRIVATE);
                         //                        File cascadeFile = new File(cascadeDir, "banana_classifier.xml");
 //                        File cascadeFile = new File(cascadeDir, "chair.xml");
-                                                File cascadeFile = new File(cascadeDir, "cascade.xml");
+                        File cascadeFile = new File(cascadeDir, "cascade.xml");
                         FileOutputStream os = new FileOutputStream(cascadeFile);
 
                         byte[] buffer = new byte[4096];
@@ -471,8 +471,8 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 
         //        initialize cpu controller, set to 400 MHz;
         cpuController1 = new CPUController();
-        cpuController1.CPU_FreqChange(4);
-        //cpuController1.CPU_FreqChange(0);
+//        cpuController1.CPU_FreqChange(4);
+        cpuController1.CPU_FreqChange(0);
         System.out.println("here");
         //        Log.i(TAG, "Power save mode");
 
@@ -939,7 +939,7 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 
 
 //                for (int j = 0; j < files.size(); j++) {
-//                    counter++;
+                    counter++;
 //                    Log.d("Files", "FileName:" + files.get(j).getName());
 //                    Log.d("detected", "detected:"+ counter);
 //// Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/depth_large/" + files1.get(j).getName());
@@ -952,7 +952,7 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
                 //while(counter <100) {
                 //                    for (int j = 0; j < files.size(); j++) {
                 lTimeStart = System.currentTimeMillis();
-                Log.d("Time", "start at:"+ lTimeStart);
+                Log.d("Time", "start at:"+ counter);
 
 //                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair/chair2.png");
                 Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair/KinectScreenshot-Color-07-36-09.png");
@@ -960,15 +960,10 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 //                Mat newFrame = depthFrame.submat(180,424,238,341); // for video 1 @47
 //                 newFrame = newFrame.submat(149,419,199,270); // for video 2 @48
 
-
-
                 Imgproc.cvtColor(newFrame, mGray, Imgproc.COLOR_RGBA2GRAY); // Convert to grayscale
-
                 MatOfRect faces = new MatOfRect();
-
                 if (mAbsoluteFaceSize == 0) {
                     int height = mGray.rows();
-
                     if (Math.round(height * mRelativeFaceSize) > 0) {
                         mAbsoluteFaceSize = Math.round(height * mRelativeFaceSize);
                     }
@@ -976,17 +971,55 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
                 if (mCascade != null)
                     mCascade.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
                             new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
-
-                // Each rectangle in the faces array is a face
-                // Draw a rectangle around each face
+// Each rectangle in the faces array is a face
+// Draw a rectangle around each face
                 Rect[] facesArray = faces.toArray();
                 for (int i = 0; i < facesArray.length; i++)
                     Core.rectangle(newFrame, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
+//                Highgui.imwrite("/mnt/sdcard/results/" + files.get(j).getName(), newFrame);
+                Highgui.imwrite("/mnt/sdcard/results/ KinectScreenshot-Color-07-36-09.png", newFrame);
 
-                Highgui.imwrite("/mnt/sdcard/results/test5.png", newFrame);
+                if (counter > 82){
+                    cpuController1.CPU_FreqChange(2);// Set the frequency to 1134000 KHz
+                    Log.d("detected", "detected:");
+                }
+//}
+                if (counter > 100) {
+                    Log.d("over", "over:");
+                }
 
-                lTimeEnd = System.currentTimeMillis();
-                Log.d("Time", "used :"+ (lTimeEnd-lTimeStart));
+                // set target FPS range 10 ~ 20
+                // if FPS < 10, then setCPUcontroller up
+                // if FPS > 20, then setCPUcontroller down
+                // 
+
+
+
+//                Imgproc.cvtColor(newFrame, mGray, Imgproc.COLOR_RGBA2GRAY); // Convert to grayscale
+//
+//                MatOfRect faces = new MatOfRect();
+//
+//                if (mAbsoluteFaceSize == 0) {
+//                    int height = mGray.rows();
+//
+//                    if (Math.round(height * mRelativeFaceSize) > 0) {
+//                        mAbsoluteFaceSize = Math.round(height * mRelativeFaceSize);
+//                    }
+//                }
+//                if (mCascade != null)
+//                    mCascade.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
+//                            new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+//
+//                // Each rectangle in the faces array is a face
+//                // Draw a rectangle around each face
+//                Rect[] facesArray = faces.toArray();
+//                for (int i = 0; i < facesArray.length; i++)
+//                    Core.rectangle(newFrame, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
+//
+//                Highgui.imwrite("/mnt/sdcard/results/test5.png", newFrame);
+//
+//                lTimeEnd = System.currentTimeMillis();
+//                Log.d("Time", "used :"+ (lTimeEnd-lTimeStart));
 
 
 
