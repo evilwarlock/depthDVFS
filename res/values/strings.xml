@@ -14,7 +14,7 @@
     <string name="action_opflow">Optical Flow</string>
     <string name="action_swapcamera">Swap Camera</string>
     <string name="action_toggletitles">Toggle Titles</string>
-    <string name="action_slidingwindows">Sliding Windows</string>
+    <string name="action_slidingwindows">Object Detection</string>
 
 
 </resources>

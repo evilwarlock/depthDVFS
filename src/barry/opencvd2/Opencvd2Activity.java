@@ -103,6 +103,8 @@ import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.utils.Converters;
 import org.opencv.video.Video;
 
+
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -120,6 +122,8 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
+
+
 
 public class Opencvd2Activity extends Activity  implements CvCameraViewListener {
 
@@ -232,6 +236,7 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
     private Size sSize, sSize3, sSize5, sMatSize;
     private String string, sShotText;
     private CPUController        cpuController1;
+    private FelzenswalbHuttenlocherSegmenter fh;
     private int counter = 0;
 
 
@@ -476,7 +481,8 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
         System.out.println("here");
         //        Log.i(TAG, "Power save mode");
 
-
+        //      intialize FelzenswalbHuttenlocherSegmenter
+        fh = new FelzenswalbHuttenlocherSegmenter((float)0.8,500,500);
     }
 
     @Override
@@ -935,63 +941,82 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 
 
             case VIEW_MODE_OBJECT_DETECTION:
-                // Set the frequency to 1134000 KHz
-
-
-//                for (int j = 0; j < files.size(); j++) {
-                    counter++;
-//                    Log.d("Files", "FileName:" + files.get(j).getName());
-//                    Log.d("detected", "detected:"+ counter);
-//// Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/depth_large/" + files1.get(j).getName());
-//                    Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/resized_color_large/" + files.get(j).getName());
+//                // Begin with lowest freq., increase when fps less than 10, decrease when fps more than 20
+//
+//                // Start time
+//                lTimeStart = System.currentTimeMillis();
+//                Log.d("Time", "start at:"+ counter);
+//
+//                // load single image, color and depth
+//                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair/chair2.png");
+//                Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair/chair2.png");
 //
 
-                //                List<File> files = getListFiles(new File("/mnt/sdcard/ImageDataset/test/"));
-                //                List<File> files1 = getListFiles(new File("/mnt/sdcard/ImageDataset/depth_large/"));
 
-                //while(counter <100) {
-                //                    for (int j = 0; j < files.size(); j++) {
+                // load image folder
+//                for (int j = 0; j < files.size(); j++) {
+//
+//                    Log.d("Files", "FileName:" + files.get(j).getName());
+//                    Log.d("detected", "detected:"+ counter);
+//                    Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/depth_large/" + files1.get(j).getName());
+//                    Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/resized_color_large/" + files.get(j).getName());
+//
+//
+//                    List<File> files = getListFiles(new File("/mnt/sdcard/ImageDataset/test/"));
+//                    List<File> files1 = getListFiles(new File("/mnt/sdcard/ImageDataset/depth_large/"));
+//
+
+                // image segmentation test
+
+                Mat tRgba = mRgba.submat(0,100,0,100);
                 lTimeStart = System.currentTimeMillis();
-                Log.d("Time", "start at:"+ counter);
+                mRgba = fh.segmentImage(tRgba);
+                Highgui.imwrite("/mnt/sdcard/ImageDataset/test/result1.png", mRgba);
+                lTimeEnd = System.currentTimeMillis();
+                Log.d("Time", "used :"+ (lTimeEnd-lTimeStart));
 
-//                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair/chair2.png");
-                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair/KinectScreenshot-Color-07-36-09.png");
+
+//            Mat rgbIm = Highgui.imread("/Users/scalzom/Desktop/Weak_OD/objectness-release-v2.2/VOCB3DO/KinectColor/img_0836.png");//"/Users/scalzom/Desktop/Weak_OD/objectness-release-v2.2/VOCB3DO/KinectColor/img_0836.png");
+//                 FelzenswalbHuttenlocherSegmenter fh = new FelzenswalbHuttenlocherSegmenter(sigma,k,mins);
+//        long starttime = System.nanoTime();
+//        long elapseTime = System.nanoTime()-starttime;
+//        System.out.println("Elapsed time = "+elapseTime/Math.pow(10.0, 9.0));
 
 //                Mat newFrame = depthFrame.submat(180,424,238,341); // for video 1 @47
 //                 newFrame = newFrame.submat(149,419,199,270); // for video 2 @48
 
-                Imgproc.cvtColor(newFrame, mGray, Imgproc.COLOR_RGBA2GRAY); // Convert to grayscale
-                MatOfRect faces = new MatOfRect();
-                if (mAbsoluteFaceSize == 0) {
-                    int height = mGray.rows();
-                    if (Math.round(height * mRelativeFaceSize) > 0) {
-                        mAbsoluteFaceSize = Math.round(height * mRelativeFaceSize);
-                    }
-                }
-                if (mCascade != null)
-                    mCascade.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-                            new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
-// Each rectangle in the faces array is a face
-// Draw a rectangle around each face
-                Rect[] facesArray = faces.toArray();
-                for (int i = 0; i < facesArray.length; i++)
-                    Core.rectangle(newFrame, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
-//                Highgui.imwrite("/mnt/sdcard/results/" + files.get(j).getName(), newFrame);
-                Highgui.imwrite("/mnt/sdcard/results/ KinectScreenshot-Color-07-36-09.png", newFrame);
-
-                if (counter > 82){
-                    cpuController1.CPU_FreqChange(2);// Set the frequency to 1134000 KHz
-                    Log.d("detected", "detected:");
-                }
-//}
-                if (counter > 100) {
-                    Log.d("over", "over:");
-                }
-
-                // set target FPS range 10 ~ 20
-                // if FPS < 10, then setCPUcontroller up
-                // if FPS > 20, then setCPUcontroller down
-                // 
+//                Imgproc.cvtColor(newFrame, mGray, Imgproc.COLOR_RGBA2GRAY); // Convert to grayscale
+//                MatOfRect faces = new MatOfRect();
+//                if (mAbsoluteFaceSize == 0) {
+//                    int height = mGray.rows();
+//                    if (Math.round(height * mRelativeFaceSize) > 0) {
+//                        mAbsoluteFaceSize = Math.round(height * mRelativeFaceSize);
+//                    }
+//                }
+//                if (mCascade != null)
+//                    mCascade.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
+//                            new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+//// Each rectangle in the faces array is a face
+//// Draw a rectangle around each face
+//                Rect[] facesArray = faces.toArray();
+//                for (int i = 0; i < facesArray.length; i++)
+//                    Core.rectangle(newFrame, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
+////                Highgui.imwrite("/mnt/sdcard/results/" + files.get(j).getName(), newFrame);
+////                Highgui.imwrite("/mnt/sdcard/results/ KinectScreenshot-Color-07-36-09.png", newFrame);
+//
+//                if (counter > 82){
+//                    cpuController1.CPU_FreqChange(2);// Set the frequency to 1134000 KHz
+//                    Log.d("detected", "detected:");
+//                }
+////}
+//                if (counter > 100) {
+//                    Log.d("over", "over:");
+//                }
+//
+//                // set target FPS range 10 ~ 20
+//                // if FPS < 10, then setCPUcontroller up
+//                // if FPS > 20, then setCPUcontroller down
+//                //
 
 
 
