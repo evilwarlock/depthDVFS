@@ -18,9 +18,9 @@ public class CPUController {
     final int CPU_FREQ0=100000;
     final int CPU_FREQ1=200000;
     final int CPU_FREQ2=400000;
-    final int CPU_FREQ3=800000;
-    final int CPU_FREQ4=1000000;
-    final int num_freq=5;
+    final int CPU_FREQ3=1600000;
+    final int CPU_FREQ4=1600000;
+    final int num_freq = 4;
     int freq_old=0;
     
 	/*Constructor*/
@@ -78,95 +78,95 @@ void CPU_FreqChange(int freq_idx){
 		
 	try{
         if(freq_idx==0){
-            os.writeBytes("echo 250000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 250000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 250000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 250000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
-        }
-        else  if(freq_idx==1) {
-            os.writeBytes("echo 300000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 300000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 300000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 300000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
-        }
-        else  if(freq_idx==2) {
-            os.writeBytes("echo 400000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 400000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 400000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 400000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
-        }
-        else  if(freq_idx==3) {
-            os.writeBytes("echo 450000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 450000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 450000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 450000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
-        }
-        else  if(freq_idx==4) {
-            os.writeBytes("echo 500000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 500000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 500000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 500000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
-        }
-        else  if(freq_idx==5) {
-            os.writeBytes("echo 600000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 600000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 600000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 600000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
-        }
-        else  if(freq_idx==6) {
             os.writeBytes("echo 800000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
             os.writeBytes("echo 800000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
             os.writeBytes("echo 800000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
             os.writeBytes("echo 800000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
         }
-        else  if(freq_idx==7) {
-            os.writeBytes("echo 900000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 900000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 900000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 900000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
-        }
-        else  if(freq_idx==8) {
+        else  if(freq_idx==1) {
             os.writeBytes("echo 1000000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
             os.writeBytes("echo 1000000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
             os.writeBytes("echo 1000000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
             os.writeBytes("echo 1000000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
         }
-        else  if(freq_idx==9) {
+        else  if(freq_idx==2) {
             os.writeBytes("echo 1100000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
             os.writeBytes("echo 1100000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
             os.writeBytes("echo 1100000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
             os.writeBytes("echo 1100000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
         }
-        else  if(freq_idx==10) {
+        else  if(freq_idx==3) {
             os.writeBytes("echo 1200000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
             os.writeBytes("echo 1200000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
             os.writeBytes("echo 1200000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
             os.writeBytes("echo 1200000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
         }
-        else  if(freq_idx==11) {
-            os.writeBytes("echo 1300000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 1300000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 1300000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 1300000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
-        }
-        else  if(freq_idx==12) {
-            os.writeBytes("echo 1400000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 1400000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 1400000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 1400000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
-        }
-        else  if(freq_idx==13) {
-            os.writeBytes("echo 1500000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 1500000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 1500000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
-            os.writeBytes("echo 1500000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
-        }
-        else  if(freq_idx==14) {
+        else  if(freq_idx==4) {
             os.writeBytes("echo 1600000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
             os.writeBytes("echo 1600000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
             os.writeBytes("echo 1600000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
             os.writeBytes("echo 1600000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
         }
+//        else  if(freq_idx==5) {
+//            os.writeBytes("echo 600000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 600000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 600000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 600000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
+//        }
+//        else  if(freq_idx==6) {
+//            os.writeBytes("echo 800000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 800000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 800000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 800000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
+//        }
+//        else  if(freq_idx==7) {
+//            os.writeBytes("echo 900000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 900000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 900000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 900000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
+//        }
+//        else  if(freq_idx==8) {
+//            os.writeBytes("echo 1000000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1000000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1000000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1000000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
+//        }
+//        else  if(freq_idx==9) {
+//            os.writeBytes("echo 1100000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1100000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1100000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1100000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
+//        }
+//        else  if(freq_idx==10) {
+//            os.writeBytes("echo 1600000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1600000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1600000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1600000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
+//        }
+//        else  if(freq_idx==11) {
+//            os.writeBytes("echo 1300000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1300000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1300000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1300000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
+//        }
+//        else  if(freq_idx==12) {
+//            os.writeBytes("echo 1400000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1400000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1400000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1400000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
+//        }
+//        else  if(freq_idx==13) {
+//            os.writeBytes("echo 1500000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1500000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1500000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1500000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
+//        }
+//        else  if(freq_idx==14) {
+//            os.writeBytes("echo 1600000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1600000 > /sys/devices/system/cpu/cpu1/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1600000 > /sys/devices/system/cpu/cpu2/cpufreq/scaling_setspeed\n");
+//            os.writeBytes("echo 1600000 > /sys/devices/system/cpu/cpu3/cpufreq/scaling_setspeed\n");
+//        }
          os.flush();
 	}
 	catch(Exception ex){	
@@ -184,8 +184,8 @@ void CPU_FreqManager(float u_goal,float CPUUtil_Now){
 	else freq_old=freq_cur;
 	
 	//System.out.println(freq_cur);
-	
-if(CPUUtil_Now>u_goal+0.1){	
+
+if(CPUUtil_Now>u_goal+0.1){
 	if(freq_cur==CPU_FREQ0){
 		CPU_FreqChange(1);
 	}
@@ -200,8 +200,8 @@ if(CPUUtil_Now>u_goal+0.1){
 	}
 	else if(freq_cur==CPU_FREQ4){
 	}
-	
-}	
+
+}
 else if(CPUUtil_Now<u_goal-0.1){
 	if(freq_cur==CPU_FREQ0){
 	}
@@ -217,12 +217,12 @@ else if(CPUUtil_Now<u_goal-0.1){
 	else if(freq_cur==CPU_FREQ4){
 		CPU_FreqChange(3);
 	}
-}	
+}
 
 //System.out.println(String.valueOf(freq_cur*CPUUtil_Now));
 //System.out.println(String.valueOf(fu_goal));
 
-return;	
+return;
 }	
 
 

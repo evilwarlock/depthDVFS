@@ -162,9 +162,9 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
                         Context context = getApplicationContext();
                         InputStream is3 = context.getResources().openRawResource(R.raw.banana_classifier);
                         File cascadeDir = context.getDir("cascade", Context.MODE_PRIVATE);
-                        //                        File cascadeFile = new File(cascadeDir, "banana_classifier.xml");
+                        File cascadeFile = new File(cascadeDir, "banana_classifier.xml");
 //                        File cascadeFile = new File(cascadeDir, "chair.xml");
-                        File cascadeFile = new File(cascadeDir, "cascade.xml");
+//                        File cascadeFile = new File(cascadeDir, "cascade.xml");
                         FileOutputStream os = new FileOutputStream(cascadeFile);
 
                         byte[] buffer = new byte[4096];
@@ -223,7 +223,7 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
     private Mat mRgba, mGray, mIntermediateMat, mMatRed, mMatGreen, mMatBlue, mROIMat,
             mMatRedInv, mMatGreenInv, mMatBlueInv, mHSVMat, mErodeKernel, mContours,
             lines, mFaceDest, mFaceResized, matOpFlowPrev, matOpFlowThis,
-            matFaceHistogramPrevious, matFaceHistogramThis, mHist, mSlidingWindow;
+            matFaceHistogramPrevious, matFaceHistogramThis, mHist, mSlidingWindow, mDepth;
     private MatOfFloat mMOFerr, MOFrange;
     private MatOfRect faces;
     private MatOfByte mMOBStatus;
@@ -236,8 +236,13 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
     private Size sSize, sSize3, sSize5, sMatSize;
     private String string, sShotText;
     private CPUController        cpuController1;
-    private FelzenswalbHuttenlocherSegmenter fh;
+    //    private FelzenswalbHuttenlocherSegmenter fh;
     private int counter = 0;
+    private long timeCount = 0;
+//    private SN1_3 SN;
+
+
+
 
 
     @Override
@@ -269,6 +274,9 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
         }
 
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_4, this, mLoaderCallback);
+
+
+
     }
 
 
@@ -419,6 +427,7 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
         mContours = new Mat();
         mHist = new Mat();
         mGray = new Mat();
+        mDepth = new Mat();
         mHSVMat = new Mat();
         mIntermediateMat = new Mat();
         mMatRed = new Mat();
@@ -474,15 +483,16 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
         mRgba = new Mat(height, width, CvType.CV_8UC4);
         mIntermediateMat = new Mat(height, width, CvType.CV_8UC4);
 
+        //      intialize FelzenswalbHuttenlocherSegmenter
+//        fh = new FelzenswalbHuttenlocherSegmenter((float)0.8,500,500);
+
         //        initialize cpu controller, set to 400 MHz;
         cpuController1 = new CPUController();
-//        cpuController1.CPU_FreqChange(4);
         cpuController1.CPU_FreqChange(0);
+
         System.out.println("here");
         //        Log.i(TAG, "Power save mode");
 
-        //      intialize FelzenswalbHuttenlocherSegmenter
-        fh = new FelzenswalbHuttenlocherSegmenter((float)0.8,500,500);
     }
 
     @Override
@@ -941,19 +951,326 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 
 
             case VIEW_MODE_OBJECT_DETECTION:
-//                // Begin with lowest freq., increase when fps less than 10, decrease when fps more than 20
+
+////                Demo version
+//                boolean detection = false;
+//                Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY); // Convert to grayscale
 //
-//                // Start time
+//                MatOfRect faces = new MatOfRect();
+//
+//                if (mAbsoluteFaceSize == 0) {
+//                    int height = mGray.rows();
+//
+//                    if (Math.round(height * mRelativeFaceSize) > 0) {
+//                        mAbsoluteFaceSize = Math.round(height * mRelativeFaceSize);
+//                    }
+//                }
+//                if (mCascade != null)
+//                    mCascade.detectMultiScale(mGray, faces, 1.1, 6, 0, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
+//                            new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+//
+//                // Each rectangle in the faces array is a face
+//                // Draw a rectangle around each face
+//                Rect[] facesArray = faces.toArray();
+//                for (int i = 0; i < facesArray.length; i++) {
+//                    detection = true;
+//                    Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
+//                }
+//                if (detection) {
+//                    cpuController1.CPU_FreqChange(4);
+//                }
+
+//                Highgui.imwrite("/mnt/sdcard/results/" + files.get(j).getName(), newFrame);
+//                if (counter > 82){
+//                    cpuController1.CPU_FreqChange(4);// Set the frequency to 1134000 KHz
+//                    Log.d("detected", "detected:");
+//
+//                }
+//
+//
+//                if (counter > 100) {
+//                    Log.d("over", "over:");
+//                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//                Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY);
+
+//                Size sizeRgba = mRgba.size();
+//                int step = 200;
+//
+//                rDest.x = 5;
+//                rDest.y = 5;
+//                rDest.width = 400;
+//                rDest.height = 400;
+//
+//                for (rDest.x = 5; rDest.x < sizeRgba.width; rDest.x = rDest.x + step ) {
+//                    for (rDest.y = 5; rDest.y < sizeRgba.height; rDest.y = rDest.y + step) {
+//                        mSlidingWindow = mRgba.submat(rDest);
+//                        Core.rectangle(mRgba, rDest.tl(), rDest.br(), colorRed, 3);
+//
+//
+//                    }
+//                }
+
+//                Mat rgbaInnerWindow, rgbaInnerWindow1, rgbaInnerWindow2;
+//                Mat cellWindow;
+//                MatOfByte status = new MatOfByte();
+//                MatOfFloat err = new MatOfFloat();
+//                MatOfPoint2f nextPts =new MatOfPoint2f();
+//                MatOfPoint2f prevPts =new MatOfPoint2f();
+//                MatOfPoint initial = new MatOfPoint();
+
+//                int rows = (int) sizeRgba.height;
+//                int cols = (int) sizeRgba.width;
+
+
+//                int left = 2*cols / 8;
+//                int top = 2*rows / 8;
+//
+//                int width = cols * 1 / 4;
+//                int height = rows * 1 / 4;
+
+//                Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), colorRed, 3);
+//                int cols = mRgba.cols();
+//                int rows = mRgba.rows();
+//                int xOffset = (mOpenCvCameraView.getWidth() - cols) / 2;
+//                int yOffset = (mOpenCvCameraView.getHeight() - rows) / 2;
+//                int x = (int)event.getX() - xOffset;
+//                int y = (int)event.getY() - yOffset;
+
+
+//                // doing a gaussian blur prevents getting a lot of false hits
+//                Imgproc.GaussianBlur(mGray, mGray, sSize5, 2, 2);
+//
+//                iCannyLowerThreshold = 35;
+//                iCannyUpperThreshold = 75;
+//
+//                Imgproc.Canny(mGray, mIntermediateMat, iCannyLowerThreshold, iCannyUpperThreshold);
+//
+//                Imgproc.cvtColor(mIntermediateMat, mRgba, Imgproc.COLOR_GRAY2BGRA, 4);
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//                cpuController1.CPU_FreqChange(4);
+
+//                Test code for ground removal
+//                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/ground/G1.png");
+////                newFrame = newFrame.submat(1,100,1,100);
+////                Highgui.imwrite("/mnt/sdcard/ImageDataset/test/submatK111.png",newFrame);
+//
+//                Mat depthFrame = new Mat();
+//                //depthFrame=newFrame.clone();
+//                Imgproc.cvtColor(newFrame, depthFrame, Imgproc.COLOR_RGBA2GRAY); // Convert to grayscale
+//
 //                lTimeStart = System.currentTimeMillis();
-//                Log.d("Time", "start at:"+ counter);
 //
-//                // load single image, color and depth
-//                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair/chair2.png");
-//                Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair/chair2.png");
+//                SN1_2 SN;
+//                SN = new SN1_2(depthFrame);
 //
+////                test SN1_1
+////                SN1_1 SN;
+////                SN = new SN1_1(depthFrame);
+//
+//
+//                lTimeEnd = System.currentTimeMillis();
+//                Log.d("Time1", "used :"+ (lTimeEnd-lTimeStart));
 
 
-                // load image folder
+
+
+    /*                Test code for image segmentation
+//                Image Segmentation
+//                =========start=========
+//                Mat tRgba = mRgba.submat(0,100,0,100);
+//                lTimeStart = System.currentTimeMillis();
+//                mRgba = fh.segmentImage(tRgba);
+//                Highgui.imwrite("/mnt/sdcard/ImageDataset/test/result1.png", mRgba);
+//                lTimeEnd = System.currentTimeMillis();
+//                Log.d("Time", "used :"+ (lTimeEnd-lTimeStart));
+//                =========end=========
+*/
+
+//                Test code for adaptive DVFS
+//                =========start=========
+//                Start with lowest freq., increase when fps less than 10, decrease when fps more than 20
+
+        // load image folder
+//
+//                List<File> files = getListFiles(new File("/mnt/sdcard/ImageDataset/new banana/"));
+//                List<File> files1 = getListFiles(new File("/mnt/sdcard/ImageDataset/depth new banana/"));
+//
+//
+//                for (int j = 0; j < files.size(); j++) {
+//
+//                    Log.d("Files", "FileName:" + files.get(j).getName());
+//                    Log.d("detected", "detected:" + counter);
+////                    Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/depth_large/" + files1.get(j).getName());
+////                    Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/resized_color_large/" + files.get(j).getName());
+//
+//                    Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/depth new banana/" + files1.get(j).getName());
+//                    Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new banana/" + files.get(j).getName());
+
+
+
+//                cpuController1.CPU_FreqChange(1);
+//                if (counter <= 72){
+//                    cpuController1.CPU_FreqChange(0); // >72 for banana, >82 for chair
+//                }
+//                if (counter == 73){
+//                    cpuController1.CPU_FreqChange(1); // >72 for banana, >82 for chair
+//                }
+//                if (counter == 74){
+//                    cpuController1.CPU_FreqChange(2); // >72 for banana, >82 for chair
+//                }
+//                if (counter >= 75){
+//                    cpuController1.CPU_FreqChange(3); // >72 for banana, >82 for chair
+//                }
+
+
+//                cpuController1.CPU_FreqChange(4);
+                lTimeStart = System.currentTimeMillis(); // start time
+
+                counter = counter + 1;
+                Log.d("FPS", "count :"+ counter);
+                Log.d("Start time","at:"+ counter);
+
+//                load single image, color and depth
+                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/KinectScreenshot-Color-07-32-22.png"); // chair video 1
+//                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/KinectScreenshot-Color-07-37-40.png"); // chair video 2
+//                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/KinectScreenshot-Color-08-36-23.png"); // chair video 3
+
+//                Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/depth/KinectScreenshot-Depth-11-32-22.png");
+
+                // rgbd threoshold
+//                newFrame = newFrame.submat(40,424,10,512);//for KinectScreenshot-Color-07-32-22.png
+//                newFrame = newFrame.submat(121,424,6,512);//for KinectScreenshot-Color-07-37-40.png
+//                newFrame = newFrame.submat(109,424,1,512);//for KinectScreenshot-Color-08-36-23.png
+
+                // rgbd threshold + ground removal
+                Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/KinectScreenshot-Color-08-36-23.png", Highgui.CV_LOAD_IMAGE_ANYDEPTH);
+		        Mat H1 = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/H1.png");
+		        Imgproc.cvtColor(H1, H1, Imgproc.COLOR_RGB2GRAY);
+		        Mat H2 = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/H2.png");
+		        Imgproc.cvtColor(H2, H2, Imgproc.COLOR_RGB2GRAY);
+
+//                lTimeStart = System.currentTimeMillis(); // start time
+
+                SN1_3 SN;
+		        SN = new SN1_3(depthFrame, H1 ,H2);
+
+//                lTimeEnd = System.currentTimeMillis();
+//                Log.d("Time", "used :"+ (lTimeEnd-lTimeStart));
+//                Log.d("FPS", " :"+ (float)(1000.0/(lTimeEnd-lTimeStart)));
+//                timeCount = timeCount+(lTimeEnd-lTimeStart);
+
+                // rgbd threshold + ground removal
+                newFrame = newFrame.submat(146,347,133,258);//for KinectScreenshot-Color-07-32-22.png
+//                newFrame = newFrame.submat(124,273,231,347);//for KinectScreenshot-Color-07-37-40.png
+//                newFrame = newFrame.submat(137,422,241,415);//for KinectScreenshot-Color-08-36-23.png
+
+////                lTimeEnd = System.currentTimeMillis();
+////                Log.d("Time", "used :"+ (lTimeEnd-lTimeStart));
+//
+
+////                newFrame = newFrame.submat(209,424,69,303); // for video 2 @48
+////                depthFrame = depthFrame.submat(0,100,0,100); // for video 2 @48
+//
+////                Mat newFrame = depthFrame.submat(180,424,238,341); // for video 1 @47
+////                 newFrame = newFrame.submat(149,419,199,270); // for video 2 @48
+////                        if (counter >= 82){
+////                            cpuController1.CPU_FreqChange(1);
+////                            Log.d("FPS", "detected:");
+////                        }
+////                if (counter == 82){
+////                cpuController1.CPU_FreqChange(1);
+////                    Log.d("FPS", "detected:");
+////                }
+////                if (counter == 83){
+////                    cpuController1.CPU_FreqChange(2);
+////                    Log.d("FPS", "detected:");
+////                }
+////                if (counter >83){
+////                    cpuController1.CPU_FreqChange(3);
+////                    Log.d("FPS", "detected:");
+////                }
+//
+//
+                Imgproc.cvtColor(newFrame, mGray, Imgproc.COLOR_RGBA2GRAY); // Convert to grayscale
+//
+                MatOfRect faces = new MatOfRect();
+                if (mAbsoluteFaceSize == 0) {
+                    int height = mGray.rows();
+                    if (Math.round(height * mRelativeFaceSize) > 0) {
+                        mAbsoluteFaceSize = Math.round(height * mRelativeFaceSize);
+                    }
+                }
+                if (mCascade != null)
+                    mCascade.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
+                            new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+//                Each rectangle in the faces array is a face
+//                Draw a rectangle around each face
+                Rect[] facesArray = faces.toArray();
+                for (int i = 0; i < facesArray.length; i++)
+                    Core.rectangle(newFrame, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
+//                Save image to result folder
+//                Highgui.imwrite("/mnt/sdcard/results/" + files.get(j).getName(), newFrame);
+//                Highgui.imwrite("/mnt/sdcard/results/results.png", newFrame);
+
+//                Calculate process time and FPS
+                lTimeEnd = System.currentTimeMillis();
+                Log.d("Time", "used :"+ (lTimeEnd-lTimeStart));
+                Log.d("FPS", " :"+ (float)(1000.0/(lTimeEnd-lTimeStart)));
+//                timeCount = timeCount+(lTimeEnd-lTimeStart);
+//
+//
+////}
+                if (counter > 100) {
+                    Log.d("Average Time", "used :"+ timeCount/100.0);
+                    Log.d("Count", "over:");
+                }
+
+        // set target FPS range 10 ~ 20
+        // if FPS < 10, then setCPUcontroller up
+        // if FPS > 20, then setCPUcontroller down
+        //
+
+        // load image folder
 //                for (int j = 0; j < files.size(); j++) {
 //
 //                    Log.d("Files", "FileName:" + files.get(j).getName());
@@ -966,14 +1283,7 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 //                    List<File> files1 = getListFiles(new File("/mnt/sdcard/ImageDataset/depth_large/"));
 //
 
-                // image segmentation test
-
-                Mat tRgba = mRgba.submat(0,100,0,100);
-                lTimeStart = System.currentTimeMillis();
-                mRgba = fh.segmentImage(tRgba);
-                Highgui.imwrite("/mnt/sdcard/ImageDataset/test/result1.png", mRgba);
-                lTimeEnd = System.currentTimeMillis();
-                Log.d("Time", "used :"+ (lTimeEnd-lTimeStart));
+//
 
 
 //            Mat rgbIm = Highgui.imread("/Users/scalzom/Desktop/Weak_OD/objectness-release-v2.2/VOCB3DO/KinectColor/img_0836.png");//"/Users/scalzom/Desktop/Weak_OD/objectness-release-v2.2/VOCB3DO/KinectColor/img_0836.png");
@@ -985,7 +1295,7 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 //                Mat newFrame = depthFrame.submat(180,424,238,341); // for video 1 @47
 //                 newFrame = newFrame.submat(149,419,199,270); // for video 2 @48
 
-//                Imgproc.cvtColor(newFrame, mGray, Imgproc.COLOR_RGBA2GRAY); // Convert to grayscale
+//                Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY); // Convert to grayscale
 //                MatOfRect faces = new MatOfRect();
 //                if (mAbsoluteFaceSize == 0) {
 //                    int height = mGray.rows();
@@ -996,11 +1306,12 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 //                if (mCascade != null)
 //                    mCascade.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
 //                            new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
-//// Each rectangle in the faces array is a face
-//// Draw a rectangle around each face
+//
+////              Each rectangle in the faces array is a face
+////              Draw a rectangle around each face
 //                Rect[] facesArray = faces.toArray();
 //                for (int i = 0; i < facesArray.length; i++)
-//                    Core.rectangle(newFrame, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
+//                    Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
 ////                Highgui.imwrite("/mnt/sdcard/results/" + files.get(j).getName(), newFrame);
 ////                Highgui.imwrite("/mnt/sdcard/results/ KinectScreenshot-Color-07-36-09.png", newFrame);
 //
@@ -1016,11 +1327,11 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 //                // set target FPS range 10 ~ 20
 //                // if FPS < 10, then setCPUcontroller up
 //                // if FPS > 20, then setCPUcontroller down
-//                //
 
 
 
-//                Imgproc.cvtColor(newFrame, mGray, Imgproc.COLOR_RGBA2GRAY); // Convert to grayscale
+//                  Simple object detection
+//                Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY); // Convert to grayscale
 //
 //                MatOfRect faces = new MatOfRect();
 //
@@ -1039,10 +1350,10 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 //                // Draw a rectangle around each face
 //                Rect[] facesArray = faces.toArray();
 //                for (int i = 0; i < facesArray.length; i++)
-//                    Core.rectangle(newFrame, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
-//
+//                    Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
+
 //                Highgui.imwrite("/mnt/sdcard/results/test5.png", newFrame);
-//
+
 //                lTimeEnd = System.currentTimeMillis();
 //                Log.d("Time", "used :"+ (lTimeEnd-lTimeStart));
 
@@ -1059,102 +1370,102 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 
 
 
-                //                Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY);
+//                                Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY);
+//
+//                                Size sizeRgba = mRgba.size();
+//                                int step = 200;
+//
+//                                rDest.x = 5;
+//                                rDest.y = 5;
+//                                rDest.width = 400;
+//                                rDest.height = 400;
+//
+//                                for (rDest.x = 5; rDest.x < sizeRgba.width; rDest.x = rDest.x + step ) {
+//                                    for (rDest.y = 5; rDest.y < sizeRgba.height; rDest.y = rDest.y + step) {
+//                                        mSlidingWindow = mRgba.submat(rDest);
+//                                        Core.rectangle(mRgba, rDest.tl(), rDest.br(), colorRed, 3);
+//
+//
+//                                    }
+//                                }
+//
+//                                Mat rgbaInnerWindow, rgbaInnerWindow1, rgbaInnerWindow2;
+//                                Mat cellWindow;
+//                                MatOfByte status = new MatOfByte();
+//                                MatOfFloat err = new MatOfFloat();
+//                                MatOfPoint2f nextPts =new MatOfPoint2f();
+//                                MatOfPoint2f prevPts =new MatOfPoint2f();
+//                                MatOfPoint initial = new MatOfPoint();
+//
+//                                int rows = (int) sizeRgba.height;
+//                                int cols = (int) sizeRgba.width;
+//
+//
+//                                int left = 2*cols / 8;
+//                                int top = 2*rows / 8;
+//
+//                                int width = cols * 1 / 4;
+//                                int height = rows * 1 / 4;
+//
+//                                Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), colorRed, 3);
+//                                int cols = mRgba.cols();
+//                                int rows = mRgba.rows();
+//                                int xOffset = (mOpenCvCameraView.getWidth() - cols) / 2;
+//                                int yOffset = (mOpenCvCameraView.getHeight() - rows) / 2;
+//                                int x = (int)event.getX() - xOffset;
+//                                int y = (int)event.getY() - yOffset;
+//
+//
+//                                // doing a gaussian blur prevents getting a lot of false hits
+//                                Imgproc.GaussianBlur(mGray, mGray, sSize5, 2, 2);
+//
+//                                iCannyLowerThreshold = 35;
+//                                iCannyUpperThreshold = 75;
+//
+//                                Imgproc.Canny(mGray, mIntermediateMat, iCannyLowerThreshold, iCannyUpperThreshold);
+//
+//                                Imgproc.cvtColor(mIntermediateMat, mRgba, Imgproc.COLOR_GRAY2BGRA, 4);
 
-                //                Size sizeRgba = mRgba.size();
-                //                int step = 200;
-                //
-                //                rDest.x = 5;
-                //                rDest.y = 5;
-                //                rDest.width = 400;
-                //                rDest.height = 400;
-                //
-                //                for (rDest.x = 5; rDest.x < sizeRgba.width; rDest.x = rDest.x + step ) {
-                //                    for (rDest.y = 5; rDest.y < sizeRgba.height; rDest.y = rDest.y + step) {
-                //                        mSlidingWindow = mRgba.submat(rDest);
-                //                        Core.rectangle(mRgba, rDest.tl(), rDest.br(), colorRed, 3);
-                //
-                //
-                //                    }
-                //                }
-
-                //                Mat rgbaInnerWindow, rgbaInnerWindow1, rgbaInnerWindow2;
-                //                Mat cellWindow;
-                //                MatOfByte status = new MatOfByte();
-                //                MatOfFloat err = new MatOfFloat();
-                //                MatOfPoint2f nextPts =new MatOfPoint2f();
-                //                MatOfPoint2f prevPts =new MatOfPoint2f();
-                //                MatOfPoint initial = new MatOfPoint();
-
-                //                int rows = (int) sizeRgba.height;
-                //                int cols = (int) sizeRgba.width;
-
-
-                //                int left = 2*cols / 8;
-                //                int top = 2*rows / 8;
-                //
-                //                int width = cols * 1 / 4;
-                //                int height = rows * 1 / 4;
-
-                //                Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), colorRed, 3);
-                //                int cols = mRgba.cols();
-                //                int rows = mRgba.rows();
-                //                int xOffset = (mOpenCvCameraView.getWidth() - cols) / 2;
-                //                int yOffset = (mOpenCvCameraView.getHeight() - rows) / 2;
-                //                int x = (int)event.getX() - xOffset;
-                //                int y = (int)event.getY() - yOffset;
-
-
-                //                // doing a gaussian blur prevents getting a lot of false hits
-                //                Imgproc.GaussianBlur(mGray, mGray, sSize5, 2, 2);
-                //
-                //                iCannyLowerThreshold = 35;
-                //                iCannyUpperThreshold = 75;
-                //
-                //                Imgproc.Canny(mGray, mIntermediateMat, iCannyLowerThreshold, iCannyUpperThreshold);
-                //
-                //                Imgproc.cvtColor(mIntermediateMat, mRgba, Imgproc.COLOR_GRAY2BGRA, 4);
-                //
-                if (bDisplayTitle)
-                    ShowTitle ("Object Detection", 1, colorGreen);
-                break;
-        }
-
-
-        // get the time now in every frame
-        lMilliNow = System.currentTimeMillis();
-
-        // update the frame counter
-        lFrameCount++;
-
-        if (bDisplayTitle) {
-            string = String.format("FPS: %2.1f", (float)(lFrameCount * 1000) / (float)(lMilliNow - lMilliStart));
-
-            ShowTitle (string, 2, colorGreen);
-        }
-
-        if (bShootNow) {
-            // get the time of the attempt to save a screenshot
-            lMilliShotTime = System.currentTimeMillis();
-            bShootNow = false;
-
-            // try it, and set the screen text accordingly.
-            // this text is shown at the end of each frame until
-            // 1.5 seconds has elapsed
-            if (SaveImage (mRgba)) {
-                sShotText = "SCREENSHOT SAVED";
-            }
-            else {
-                sShotText = "SCREENSHOT FAILED";
-            }
-
-        }
-
-        if (System.currentTimeMillis() - lMilliShotTime < 1500)
-            ShowTitle (sShotText, 3, colorRed);
-
-        return mRgba;
+        if (bDisplayTitle)
+            ShowTitle ("Object Detection", 1, colorGreen);
+        break;
     }
+
+
+    // get the time now in every frame
+    lMilliNow = System.currentTimeMillis();
+
+    // update the frame counter
+    lFrameCount++;
+
+    if (bDisplayTitle) {
+        string = String.format("FPS: %2.1f", (float)(lFrameCount * 1000) / (float)(lMilliNow - lMilliStart));
+
+        ShowTitle (string, 2, colorGreen);
+    }
+
+    if (bShootNow) {
+        // get the time of the attempt to save a screenshot
+        lMilliShotTime = System.currentTimeMillis();
+        bShootNow = false;
+
+        // try it, and set the screen text accordingly.
+        // this text is shown at the end of each frame until
+        // 1.5 seconds has elapsed
+        if (SaveImage (mRgba)) {
+            sShotText = "SCREENSHOT SAVED";
+        }
+        else {
+            sShotText = "SCREENSHOT FAILED";
+        }
+
+    }
+
+    if (System.currentTimeMillis() - lMilliShotTime < 1500)
+    ShowTitle (sShotText, 3, colorRed);
+
+    return mRgba;
+}
 
     public boolean onTouchEvent(final MotionEvent event) {
 
@@ -1162,6 +1473,24 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
         return false; // don't need more than one touch event
 
     }
+
+
+//    public Mat ThresholdImage (Mat rgbImage, Mat depthImage, double threshold){
+//
+//        int i,j;
+//        for (i = 0; i < depthImage.width(); i++){
+//            for (j = 0; j < depthImage.height(); j++){
+//                if (depthImage.get(i,j)[0] < threshold)
+//                    depthImage.get(i,j)[0] = 255;
+//                Log.d("length of depth image is",":"+ depthImage.get(i,j).length);
+//
+//
+//
+//            }
+//        }
+//        return rgbImage;
+//    }
+
 
 
     public void DrawCross (Mat mat, Scalar color, Point pt) {
@@ -1182,6 +1511,8 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
         Core.line(mat, pt1, pt2, color, iLineThickness - 1);
 
     }
+
+
 
 
     public Mat getHistogram (Mat mat) {
