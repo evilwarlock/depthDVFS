@@ -952,6 +952,15 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 
             case VIEW_MODE_OBJECT_DETECTION:
 
+//                boolean FullScan = true;
+//                boolean DepthOnly = true;
+//                boolean Adaptive = true;
+//
+//                if (FullScan){
+//
+//            }
+//                cpuController1.CPU_FreqChange(4);
+
 ////                Demo version
 //                boolean detection = false;
 //                Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGBA2GRAY); // Convert to grayscale
@@ -987,10 +996,10 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 //
 //                }
 //
-//
-//                if (counter > 100) {
-//                    Log.d("over", "over:");
-//                }
+
+                if (counter > 100) {
+                    Log.d("over", "over:");
+                }
 
 
 
@@ -1087,7 +1096,7 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 
 
 
-//                cpuController1.CPU_FreqChange(4);
+                cpuController1.CPU_FreqChange(4);
 
 //                Test code for ground removal
 //                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/ground/G1.png");
@@ -1132,20 +1141,19 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 
         // load image folder
 //
-//                List<File> files = getListFiles(new File("/mnt/sdcard/ImageDataset/new banana/"));
+//                List<File> files = getListFiles(new File("/mnt/sdcard/ImageDataset/banana_chair/"));
 //                List<File> files1 = getListFiles(new File("/mnt/sdcard/ImageDataset/depth new banana/"));
 //
 //
 //                for (int j = 0; j < files.size(); j++) {
-//
+
 //                    Log.d("Files", "FileName:" + files.get(j).getName());
 //                    Log.d("detected", "detected:" + counter);
-////                    Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/depth_large/" + files1.get(j).getName());
-////                    Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/resized_color_large/" + files.get(j).getName());
-//
+//                    Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/depth_large/" + files1.get(j).getName());
+//                    Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/banana_chair/" + files.get(j).getName());
+
 //                    Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/depth new banana/" + files1.get(j).getName());
 //                    Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new banana/" + files.get(j).getName());
-
 
 
 //                cpuController1.CPU_FreqChange(1);
@@ -1162,101 +1170,110 @@ public class Opencvd2Activity extends Activity  implements CvCameraViewListener 
 //                    cpuController1.CPU_FreqChange(3); // >72 for banana, >82 for chair
 //                }
 
+// cd sys/devices/system/cpu/cpu0/cpufreq
+// cat cpuinfo_cur_freq
+
 
 //                cpuController1.CPU_FreqChange(4);
-                lTimeStart = System.currentTimeMillis(); // start time
+                    lTimeStart = System.currentTimeMillis(); // start time
 
-                counter = counter + 1;
-                Log.d("FPS", "count :"+ counter);
-                Log.d("Start time","at:"+ counter);
+                    counter = counter + 1;
+                    Log.d("Now", "count :" + counter);
+//                Log.d("Start time","at:"+ counter);
 
 //                load single image, color and depth
-                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/KinectScreenshot-Color-07-32-22.png"); // chair video 1
+//                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/KinectScreenshot-Color-07-32-22.png"); // chair video 1
 //                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/KinectScreenshot-Color-07-37-40.png"); // chair video 2
 //                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/KinectScreenshot-Color-08-36-23.png"); // chair video 3
+//                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/bag_chair/KinectScreenshot-Color-10-52-38.png"); // chair bag video 4
+                Mat newFrame = Highgui.imread("/mnt/sdcard/ImageDataset/banana_chair/KinectScreenshot-Color-10-56-27.png"); // chair banana video 5
 
-//                Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/depth/KinectScreenshot-Depth-11-32-22.png");
 
-                // rgbd threoshold
+                Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/depth/KinectScreenshot-Depth-11-32-22.png");
+
+                    // rgbd threoshold
 //                newFrame = newFrame.submat(40,424,10,512);//for KinectScreenshot-Color-07-32-22.png
 //                newFrame = newFrame.submat(121,424,6,512);//for KinectScreenshot-Color-07-37-40.png
 //                newFrame = newFrame.submat(109,424,1,512);//for KinectScreenshot-Color-08-36-23.png
+//                newFrame = newFrame.submat(113,424,1,512);//for bag chair
+//                newFrame = newFrame.submat(78,424,1,512);//for banana chair
 
-                // rgbd threshold + ground removal
-                Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/KinectScreenshot-Color-08-36-23.png", Highgui.CV_LOAD_IMAGE_ANYDEPTH);
-		        Mat H1 = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/H1.png");
-		        Imgproc.cvtColor(H1, H1, Imgproc.COLOR_RGB2GRAY);
-		        Mat H2 = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/H2.png");
-		        Imgproc.cvtColor(H2, H2, Imgproc.COLOR_RGB2GRAY);
 
-//                lTimeStart = System.currentTimeMillis(); // start time
+//                // rgbd threshold + ground removal
+//                Mat depthFrame = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/KinectScreenshot-Color-08-36-23.png", Highgui.CV_LOAD_IMAGE_ANYDEPTH);
+//		        Mat H1 = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/H1.png");
+//		        Imgproc.cvtColor(H1, H1, Imgproc.COLOR_RGB2GRAY);
+//		        Mat H2 = Highgui.imread("/mnt/sdcard/ImageDataset/new_chair3/H2.png");
+//		        Imgproc.cvtColor(H2, H2, Imgproc.COLOR_RGB2GRAY);
+//
+//                SN1_3 SN;
+//		        SN = new SN1_3(depthFrame, H1 ,H2);
 
-                SN1_3 SN;
-		        SN = new SN1_3(depthFrame, H1 ,H2);
-
-//                lTimeEnd = System.currentTimeMillis();
-//                Log.d("Time", "used :"+ (lTimeEnd-lTimeStart));
-//                Log.d("FPS", " :"+ (float)(1000.0/(lTimeEnd-lTimeStart)));
-//                timeCount = timeCount+(lTimeEnd-lTimeStart);
-
-                // rgbd threshold + ground removal
-                newFrame = newFrame.submat(146,347,133,258);//for KinectScreenshot-Color-07-32-22.png
+                    // rgbd threshold + ground removal
+//                newFrame = newFrame.submat(146,347,133,258);//for KinectScreenshot-Color-07-32-22.png
 //                newFrame = newFrame.submat(124,273,231,347);//for KinectScreenshot-Color-07-37-40.png
 //                newFrame = newFrame.submat(137,422,241,415);//for KinectScreenshot-Color-08-36-23.png
+//                newFrame = newFrame.submat(104,321,129,479);//for chair bag
+//                newFrame = newFrame.submat(78,418,96,371);//for chair banana
 
-////                lTimeEnd = System.currentTimeMillis();
-////                Log.d("Time", "used :"+ (lTimeEnd-lTimeStart));
-//
+
 
 ////                newFrame = newFrame.submat(209,424,69,303); // for video 2 @48
 ////                depthFrame = depthFrame.submat(0,100,0,100); // for video 2 @48
 //
 ////                Mat newFrame = depthFrame.submat(180,424,238,341); // for video 1 @47
 ////                 newFrame = newFrame.submat(149,419,199,270); // for video 2 @48
-////                        if (counter >= 82){
-////                            cpuController1.CPU_FreqChange(1);
-////                            Log.d("FPS", "detected:");
-////                        }
-////                if (counter == 82){
-////                cpuController1.CPU_FreqChange(1);
-////                    Log.d("FPS", "detected:");
-////                }
-////                if (counter == 83){
-////                    cpuController1.CPU_FreqChange(2);
-////                    Log.d("FPS", "detected:");
-////                }
-////                if (counter >83){
-////                    cpuController1.CPU_FreqChange(3);
-////                    Log.d("FPS", "detected:");
-////                }
+
+
+//                // for binary dvfs test
+//                        if (counter >= 69){ // 69 for video 4
+//                            cpuController1.CPU_FreqChange(4);
+//                            Log.d("FPS", "detected:");
+//                        }
 //
+//                // for adaptive dvfs test
+//                if (counter == 82){
+//                cpuController1.CPU_FreqChange(1);
+//                    Log.d("FPS", "detected:");
+//                }
+//                if (counter == 83){
+//                    cpuController1.CPU_FreqChange(2);
+//                    Log.d("FPS", "detected:");
+//                }
+//                if (counter >83){
+//                    cpuController1.CPU_FreqChange(3);
+//                    Log.d("FPS", "detected:");
+//                }
+
+
+                    Imgproc.cvtColor(newFrame, mGray, Imgproc.COLOR_RGBA2GRAY); // Convert to grayscale
 //
-                Imgproc.cvtColor(newFrame, mGray, Imgproc.COLOR_RGBA2GRAY); // Convert to grayscale
-//
-                MatOfRect faces = new MatOfRect();
-                if (mAbsoluteFaceSize == 0) {
-                    int height = mGray.rows();
-                    if (Math.round(height * mRelativeFaceSize) > 0) {
-                        mAbsoluteFaceSize = Math.round(height * mRelativeFaceSize);
+                    MatOfRect faces = new MatOfRect();
+                    if (mAbsoluteFaceSize == 0) {
+                        int height = mGray.rows();
+                        if (Math.round(height * mRelativeFaceSize) > 0) {
+                            mAbsoluteFaceSize = Math.round(height * mRelativeFaceSize);
+                        }
                     }
-                }
-                if (mCascade != null)
-                    mCascade.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-                            new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+                    if (mCascade != null)
+                        mCascade.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
+
+                                new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
 //                Each rectangle in the faces array is a face
 //                Draw a rectangle around each face
-                Rect[] facesArray = faces.toArray();
-                for (int i = 0; i < facesArray.length; i++)
-                    Core.rectangle(newFrame, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
+                    Rect[] facesArray = faces.toArray();
+                    for (int i = 0; i < facesArray.length; i++)
+                        Core.rectangle(newFrame, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
 //                Save image to result folder
-//                Highgui.imwrite("/mnt/sdcard/results/" + files.get(j).getName(), newFrame);
+//                    Highgui.imwrite("/mnt/sdcard/results/" + files.get(j).getName(), newFrame);
 //                Highgui.imwrite("/mnt/sdcard/results/results.png", newFrame);
 
 //                Calculate process time and FPS
-                lTimeEnd = System.currentTimeMillis();
-                Log.d("Time", "used :"+ (lTimeEnd-lTimeStart));
-                Log.d("FPS", " :"+ (float)(1000.0/(lTimeEnd-lTimeStart)));
-//                timeCount = timeCount+(lTimeEnd-lTimeStart);
+                    lTimeEnd = System.currentTimeMillis();
+                    Log.d("Time", "used :" + (lTimeEnd - lTimeStart));
+                    Log.d("FPS", " :" + (float) (1000.0 / (lTimeEnd - lTimeStart)));
+
+                timeCount = timeCount+(lTimeEnd-lTimeStart);
 //
 //
 ////}
